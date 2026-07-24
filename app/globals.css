@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: #080B11;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+
+    background-image:
+      linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+
+    background-size:60px 60px;
+    opacity:.25;
+    pointer-events:none;
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:700px;
+    height:700px;
+    left:50%;
+    top:-200px;
+    transform:translateX(-50%);
+    background:#a3b85c20;
+    filter:blur(140px);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:-1;
+}
