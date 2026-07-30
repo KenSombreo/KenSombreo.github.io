@@ -74,11 +74,11 @@ export default function Header() {
             {/* Logo */}
             <a href="#home" className="group flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-olive text-lg font-black text-black shadow-lg shadow-olive/30 transition-all duration-300 group-hover:scale-105">
-                KL
+                KS
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
-                  Ken <span className="text-olive">Lemuel</span>
+                  Ken <span className="text-olive">Sombreo</span>
                 </h1>
                 <p className="text-xs text-white/50">Software Engineer</p>
               </div>

@@ -72,7 +72,7 @@ const projects = [
   role: "Frontend Developer",
   description:
     "An intuitive rental platform for cameras and photography gear, making it easy to find, compare, and book the perfect equipment.",
-  link: "#",
+  link: "http://auracam.viewdns.net/",
   tech: ["NextJS"],
   image: "/projects/auracam.png",
 },

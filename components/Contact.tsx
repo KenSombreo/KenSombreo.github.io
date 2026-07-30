@@ -197,7 +197,7 @@ export default function Contact() {
                   <label className="mb-2 block text-sm text-white/60">Full Name</label>
                   <input
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Ken Lemuel"
                     className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-white outline-none transition focus:border-olive"
                   />
                 </div>
@@ -205,7 +205,7 @@ export default function Contact() {
                   <label className="mb-2 block text-sm text-white/60">Email Address</label>
                   <input
                     type="email"
-                    placeholder="john@email.com"
+                    placeholder="ken@email.com"
                     className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-white outline-none transition focus:border-olive"
                   />
                 </div>
