@@ -111,7 +111,7 @@ export default function About() {
                 </p>
 
                 <p className="mt-8 leading-8 text-white/60">
-                  With more than <span className="text-white font-semibold">2 years</span> of
+                  With <span className="text-white font-semibold">2 years</span> of
                   professional experience, I enjoy building scalable
                   applications, automating deployments, maintaining
                   blockchain nodes, and solving real-world engineering
