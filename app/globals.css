@@ -2,38 +2,331 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ================================================================
+   PALETTE — night (default) / day
+   Values are "R G B" so Tailwind can apply /opacity.
+   ================================================================ */
+:root,
+[data-theme="dark"] {
+  --c-bg: 10 10 10;
+  --c-panel: 22 22 22;
+  --c-line: 68 68 68;
+  --c-shadow: 40 40 40;
+  --c-fg: 245 245 245;
+  --c-muted: 150 150 150;
+  --c-accent: 255 255 255;
+  --c-accent2: 160 160 160;
+  --c-accent3: 100 100 100;
+  --c-on-accent: 10 10 10;
+  --grid-alpha: 0.05;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --c-bg: 242 242 242;
+  --c-panel: 255 255 255;
+  --c-line: 20 20 20;
+  --c-shadow: 20 20 20;
+  --c-fg: 15 15 15;
+  --c-muted: 100 100 100;
+  --c-accent: 0 0 0;
+  --c-accent2: 90 90 90;
+  --c-accent3: 160 160 160;
+  --c-on-accent: 255 255 255;
+  --grid-alpha: 0.07;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-    background: #080B11;
-    color: white;
-    overflow-x: hidden;
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-fg));
+  overflow-x: hidden;
+  transition: background-color 0.3s steps(4), color 0.3s steps(4);
 }
 
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-
-    background-image:
-      linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-
-    background-size:60px 60px;
-    opacity:.25;
-    pointer-events:none;
-    z-index:-2;
+/* Pixel grid backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(var(--c-fg) / var(--grid-alpha)) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--c-fg) / var(--grid-alpha)) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: -2;
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    width:700px;
-    height:700px;
-    left:50%;
-    top:-200px;
-    transform:translateX(-50%);
-    background:#a3b85c20;
-    filter:blur(140px);
-    border-radius:50%;
-    pointer-events:none;
-    z-index:-1;
+::selection {
+  background: rgb(var(--c-accent));
+  color: rgb(var(--c-on-accent));
+}
+
+/* ================================================================
+   PIXEL PRIMITIVES
+   Notched-corner border + stepped drop shadow, built from box-shadows.
+   ================================================================ */
+@layer components {
+  .px-card {
+    --px-c: rgb(var(--c-line));
+    --px-s: rgb(var(--c-shadow));
+    position: relative;
+    background: rgb(var(--c-panel));
+    box-shadow:
+      0 -4px 0 0 var(--px-c), 0 4px 0 0 var(--px-c),
+      -4px 0 0 0 var(--px-c), 4px 0 0 0 var(--px-c),
+      6px 2px 0 0 var(--px-s), 6px 10px 0 0 var(--px-s),
+      2px 6px 0 0 var(--px-s), 10px 6px 0 0 var(--px-s);
+    transition: transform 0.18s steps(3), box-shadow 0.18s steps(3);
+  }
+
+  .px-hover:hover,
+  .px-hover:focus-visible {
+    --px-c: rgb(var(--c-accent));
+    --px-s: rgb(var(--c-accent) / 0.35);
+    transform: translate(-4px, -4px);
+    box-shadow:
+      0 -4px 0 0 var(--px-c), 0 4px 0 0 var(--px-c),
+      -4px 0 0 0 var(--px-c), 4px 0 0 0 var(--px-c),
+      10px 6px 0 0 var(--px-s), 10px 14px 0 0 var(--px-s),
+      6px 10px 0 0 var(--px-s), 14px 10px 0 0 var(--px-s);
+  }
+
+  .px-btn {
+    --px-c: rgb(var(--c-line));
+    --px-s: rgb(var(--c-shadow));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.4rem;
+    font-family: var(--font-pixel), monospace;
+    font-size: 0.7rem;
+    line-height: 1;
+    text-transform: uppercase;
+    box-shadow:
+      0 -3px 0 0 var(--px-c), 0 3px 0 0 var(--px-c),
+      -3px 0 0 0 var(--px-c), 3px 0 0 0 var(--px-c),
+      4px 1px 0 0 var(--px-s), 4px 7px 0 0 var(--px-s),
+      1px 4px 0 0 var(--px-s), 7px 4px 0 0 var(--px-s);
+    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), background-color 0.12s steps(2);
+  }
+  .px-btn:hover {
+    transform: translate(-2px, -2px);
+    --px-s: rgb(var(--c-accent) / 0.45);
+  }
+  .px-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow:
+      0 -3px 0 0 var(--px-c), 0 3px 0 0 var(--px-c),
+      -3px 0 0 0 var(--px-c), 3px 0 0 0 var(--px-c);
+  }
+  .px-btn-primary {
+    --px-c: rgb(var(--c-accent));
+    background: linear-gradient(90deg, rgb(var(--c-accent)), rgb(var(--c-accent2)));
+    color: rgb(var(--c-on-accent));
+  }
+
+  /* Two-tone gradient fill (accent → accent2) */
+  .bg-brand {
+    background: linear-gradient(90deg, rgb(var(--c-accent)), rgb(var(--c-accent2)));
+  }
+  .text-brand {
+    background: linear-gradient(90deg, rgb(var(--c-accent)), rgb(var(--c-accent2)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .px-btn-ghost {
+    background: rgb(var(--c-panel));
+    color: rgb(var(--c-fg));
+  }
+  .px-btn-ghost:hover {
+    --px-c: rgb(var(--c-accent));
+    color: rgb(var(--c-accent));
+  }
+  .px-btn-icon {
+    padding: 0.7rem;
+  }
+
+  .px-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--font-term), monospace;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: rgb(var(--c-muted));
+    border: 2px dashed rgb(var(--c-line));
+    transition: color 0.15s steps(2), border-color 0.15s steps(2);
+  }
+  .px-tag:hover {
+    color: rgb(var(--c-accent));
+    border-color: rgb(var(--c-accent));
+    border-style: solid;
+  }
+}
+
+/* ================================================================
+   ANIMATIONS
+   ================================================================ */
+
+/* Scroll reveal — stepped for a pixel feel */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.in-view .reveal {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s steps(6), transform 0.6s steps(6);
+}
+
+/* Hero entrance (runs on load, no observer needed) */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Hero entrance waits for the boot screen, unless it was already shown */
+:root { --boot-offset: 1700ms; }
+html[data-booted] { --boot-offset: 0ms; }
+.rise {
+  opacity: 0;
+  animation: rise 0.6s steps(6) forwards;
+  animation-delay: calc(var(--boot-offset) + var(--d, 0ms));
+}
+
+/* Blinking block cursor */
+@keyframes blink { 50% { opacity: 0; } }
+.cursor-block {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.9em;
+  margin-left: 0.15em;
+  vertical-align: -0.05em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Glitch — RGB split on the name */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch::before { color: rgb(var(--c-accent3)); }
+.glitch::after  { color: rgb(var(--c-accent2)); }
+@keyframes glitch-a {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
+  88% { opacity: .9; transform: translate(-3px, 1px); clip-path: inset(10% 0 55% 0); }
+  92% { opacity: .9; transform: translate(3px, -1px); clip-path: inset(60% 0 8% 0); }
+  96% { opacity: .9; transform: translate(-2px, 0);   clip-path: inset(35% 0 35% 0); }
+}
+@keyframes glitch-b {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: inset(0); }
+  89% { opacity: .9; transform: translate(3px, 0);   clip-path: inset(50% 0 20% 0); }
+  93% { opacity: .9; transform: translate(-3px, 1px); clip-path: inset(5% 0 70% 0); }
+  97% { opacity: .9; transform: translate(2px, -1px); clip-path: inset(70% 0 5% 0); }
+}
+.glitch::before { animation: glitch-a 4s steps(1) infinite; }
+.glitch::after  { animation: glitch-b 4s steps(1) infinite; }
+.glitch:hover::before { animation-duration: 0.6s; }
+.glitch:hover::after  { animation-duration: 0.6s; }
+
+/* Pixel float (idle bob in 2 frames) */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.bob { animation: bob 2.4s steps(2) infinite; }
+
+/* Scanlines over images */
+.scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.18) 0 2px,
+    transparent 2px 4px
+  );
+  pointer-events: none;
+}
+
+/* Infinite ticker (crypto-tape style) */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 40s linear infinite;
+}
+.ticker:hover .ticker-track { animation-play-state: paused; }
+
+/* Chain link between sections — packets travel down */
+@keyframes packet {
+  from { transform: translateY(-12px); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  to   { transform: translateY(var(--chain-h, 96px)); opacity: 0; }
+}
+.packet {
+  animation: packet 2.2s steps(12) infinite;
+}
+
+/* Dotted links between project nodes — dashes march along */
+@keyframes link-flow {
+  to { stroke-dashoffset: -16; }
+}
+.link-flow {
+  animation: link-flow 0.8s steps(4) infinite;
+  transition: stroke 0.15s steps(2);
+}
+
+/* Status LED */
+@keyframes led {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.led { animation: led 1.2s steps(2) infinite; }
+
+/* ================================================================
+   BOOT / MINING SCREEN — pure CSS so it always clears itself,
+   even without JS. Skipped on repeat visits within a session.
+   ================================================================ */
+@keyframes boot-out {
+  to { opacity: 0; visibility: hidden; }
+}
+@keyframes boot-fill {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+.boot {
+  animation: boot-out 0.3s steps(3) 1.7s forwards;
+}
+.boot-bar {
+  animation: boot-fill 1.4s steps(14) forwards;
+}
+html[data-booted] .boot { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .boot { display: none; }
+  .reveal, .rise { opacity: 1; transform: none; }
 }

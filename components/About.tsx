@@ -1,209 +1,95 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  Code2,
-  ServerCog,
-  Database,
-  Network,
-  Boxes,
-  BrainCircuit,
-} from "lucide-react";
+import { Code2, ServerCog, Database, Network, Boxes } from "lucide-react";
+import { BlockHeader } from "./Block";
+import { useInView } from "./useInView";
+
+const stats = [
+  { value: "2 YRS", label: "Experience" },
+  { value: "10+", label: "Projects" },
+  { value: "6+", label: "Nodes" },
+];
+
+const skills = [
+  {
+    icon: Code2,
+    title: "Software Engineering",
+    desc: "Next.js, NestJS and TypeScript apps with scalable backends.",
+  },
+  {
+    icon: Boxes,
+    title: "Blockchain",
+    desc: "dApps plus RPC, archive and collator node operations.",
+  },
+  {
+    icon: ServerCog,
+    title: "DevOps",
+    desc: "Docker, CI/CD, Nginx and automated Linux deployments.",
+  },
+  {
+    icon: Database,
+    title: "Infrastructure",
+    desc: "Proxmox virtualization, monitoring and high availability.",
+  },
+  {
+    icon: Network,
+    title: "Networking",
+    desc: "FortiGate firewalls, reverse proxies and connectivity.",
+  },
+];
 
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+  const { ref, inView } = useInView<HTMLElement>();
 
   return (
-    <>
-      <style
-  dangerouslySetInnerHTML={{
-    __html: `
-      @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap');
+    <section id="about" ref={ref} className={`relative py-12 ${inView ? "in-view" : ""}`}>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <BlockHeader height={1} label="about.me">
+          WHO <span className="text-brand">I AM</span>
+        </BlockHeader>
 
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-on-scroll {
-        opacity: 0;
-        transform: translateY(40px);
-        transition: opacity 0.7s ease, transform 0.7s ease;
-      }
-      .in-view .animate-on-scroll {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .delay-100 { transition-delay: 100ms; }
-      .delay-200 { transition-delay: 200ms; }
-      .delay-300 { transition-delay: 300ms; }
-      .delay-400 { transition-delay: 400ms; }
-      .delay-500 { transition-delay: 500ms; }
-      .delay-600 { transition-delay: 600ms; }
-      .delay-700 { transition-delay: 700ms; }
-      .delay-800 { transition-delay: 800ms; }
-      .delay-900 { transition-delay: 900ms; }
-      .delay-1000 { transition-delay: 1000ms; }
+        <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_1.3fr]">
+          {/* Bio + stats */}
+          <div className="reveal" style={{ transitionDelay: "100ms" }}>
+            <p className="text-base leading-8 text-muted">
+              Software Engineer with <span className="font-bold text-fg">2 years</span> of
+              experience across web development, backend architecture, DevOps
+              and blockchain infrastructure. I like building things that scale
+              and keeping them running in production.
+            </p>
 
-      .signature {
-        font-family: 'Dancing Script', 'Brush Script MT', 'Great Vibes', 'Pacifico', cursive;
-        font-size: 2.25rem;
-        font-weight: 600;
-        color: #a3b85c;
-        letter-spacing: 0.02em;
-        line-height: 1.2;
-      }
-      @media (min-width: 640px) {
-        .signature {
-          font-size: 3rem;
-        }
-      }
-    `,
-  }}
-/>
+            <div className="mt-10 grid grid-cols-3 gap-5">
+              {stats.map((s) => (
+                <div key={s.label} className="px-card px-hover m-1 p-4 text-center">
+                  <p className="font-pixel text-sm text-accent sm:text-base">{s.value}</p>
+                  <p className="mt-3 font-term text-lg text-muted">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      <section
-        id="about"
-        ref={sectionRef}
-        className={`relative py-32 transition-all duration-700 ${isVisible ? "in-view" : ""}`}
-      >
-        {/* Background Glow */}
-        <div className="absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-olive/10 blur-[150px]" />
-
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="rounded-[34px] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-xl lg:p-10">
-            <div className="grid gap-14 lg:grid-cols-[1.1fr_auto_1.4fr]">
-
-              {/* LEFT */}
-              <div className="animate-on-scroll delay-100">
-                <span className="inline-flex rounded-full border border-olive/30 bg-olive/10 px-5 py-2 text-sm font-semibold text-olive">
-                  ABOUT ME
-                </span>
-
-                <h2 className="mt-8 text-5xl font-black leading-tight text-white">
-                  Who
-                  <span className="text-olive"> I Am</span>
-                </h2>
-
-                <p className="mt-8 leading-8 text-white/60">
-                  I&apos;m a Software Engineer specializing in modern web
-                  development, backend architecture, DevOps,
-                  blockchain technologies, Linux infrastructure,
-                  and production deployments.
-                </p>
-
-                <p className="mt-8 leading-8 text-white/60">
-                  With <span className="text-white font-semibold">2 years</span> of
-                  professional experience, I enjoy building scalable
-                  applications, automating deployments, maintaining
-                  blockchain nodes, and solving real-world engineering
-                  problems.
-                </p>
-
-                {/* Small Stats — removed 99% uptime */}
-                <div className="mt-12 grid grid-cols-2 gap-5">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                    <h3 className="text-3xl font-black text-olive">2 years</h3>
-                    <p className="mt-2 text-sm text-white/50">Experience</p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                    <h3 className="text-3xl font-black text-olive">10+</h3>
-                    <p className="mt-2 text-sm text-white/50">Projects</p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                    <h3 className="text-3xl font-black text-olive">6+</h3>
-                    <p className="mt-2 text-sm text-white/50">Nodes</p>
+          {/* Skill blocks */}
+          <div className="grid gap-6 sm:grid-cols-2">
+            {skills.map(({ icon: Icon, title, desc }, i) => (
+              <div
+                key={title}
+                className={`reveal ${i === skills.length - 1 ? "sm:col-span-2" : ""}`}
+                style={{ transitionDelay: `${150 + i * 90}ms` }}
+              >
+                <div className="px-card px-hover group m-1 flex h-full items-start gap-4 p-5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-accent/10 text-accent transition-transform duration-150 group-hover:-rotate-6 group-hover:scale-110">
+                    <Icon size={22} />
+                  </span>
+                  <div>
+                    <h3 className="font-pixel text-[11px] leading-5 text-fg">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted">{desc}</p>
                   </div>
                 </div>
               </div>
-
-              {/* Vertical Divider */}
-              <div className="relative hidden justify-center lg:flex">
-                <div className="w-px bg-white/10" />
-                <span className="absolute top-16 h-4 w-4 rounded-full bg-olive shadow-[0_0_20px_rgba(163,184,92,.9)]" />
-                <span className="absolute bottom-16 h-4 w-4 rounded-full bg-olive shadow-[0_0_20px_rgba(163,184,92,.9)]" />
-              </div>
-
-              {/* RIGHT — 6 cards in 2 columns */}
-              <div className="grid gap-6 md:grid-cols-2">
-                {[
-                  {
-                    icon: <Code2 size={26} />,
-                    title: "Software Engineer",
-                    desc: "Building modern web applications using Next.js, NestJS, TypeScript and scalable backend architectures.",
-                  },
-                  {
-                    icon: <ServerCog size={26} />,
-                    title: "DevOps",
-                    desc: "Automating deployments, Docker containers, Linux servers, Nginx reverse proxy and CI/CD workflows.",
-                  },
-                  {
-                    icon: <Boxes size={26} />,
-                    title: "Blockchain Developer",
-                    desc: "Developing blockchain applications and maintaining RPC, Archive and Collator nodes.",
-                  },
-                  {
-                    icon: <Database size={26} />,
-                    title: "Infrastructure",
-                    desc: "Managing Proxmox virtualization, production servers, monitoring and high-availability systems.",
-                  },
-                  {
-                    icon: <Network size={26} />,
-                    title: "Networking",
-                    desc: "Experience with networking fundamentals, Fortigate firewalls, reverse proxies and server connectivity.",
-                  },
-                  {
-                    icon: <BrainCircuit size={26} />,
-                    title: "Problem Solver",
-                    desc: "Passionate about designing efficient solutions, optimizing performance and solving complex technical challenges.",
-                  },
-                ].map((item, index) => {
-                  const delay = 200 + index * 100;
-                  return (
-                    <div
-                      key={item.title}
-                      className={`animate-on-scroll delay-${Math.min(delay, 1000)} group rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-olive hover:bg-white/[0.05]`}
-                    >
-                      <div className="flex items-start gap-5">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-olive/20 bg-olive/10 text-olive transition group-hover:scale-110">
-                          {item.icon}
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-bold text-white">
-                            {item.title}
-                          </h3>
-                          <p className="mt-3 leading-7 text-white/60">
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-            </div>
+            ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
